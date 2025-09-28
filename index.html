@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giphy</title>
+    <style>
+      img {
+        display: block;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        gap: 2rem;
+      }
+      label {
+        display: block;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="#" />
+    <form>
+      <label for="search">Search GIF:</label>
+      <input type="search" name="" id="search" />
+    </form>
+    <button class="refresh">Random Cat GIF</button>
+    <script>
+      const img = document.querySelector('img');
+      const btn = document.querySelector('.refresh');
+      const form = document.querySelector('form');
+      const search = document.querySelector('input');
+
+      const getGif = (tag = 'cats') => {
+        console.log('making request...');
+        fetch(
+          'https://api.giphy.com/v1/gifs/random?api_key=WFcIAce410TxKNMKsk8g4OA6X7i0Cmpj&tag=' +
+            tag
+        )
+          .then((response) => {
+            return response.json();
+          })
+          .then((response) => {
+            img.src = response.data.images.original.url;
+          })
+          .catch((err) => console.log('Failed fetching GIF:', err));
+      };
+
+      getGif();
+
+      btn.addEventListener('click', () => {
+        getGif();
+      });
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        getGif(search.value);
+      });
+    </script>
+  </body>
+</html>
